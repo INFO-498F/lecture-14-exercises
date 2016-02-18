@@ -14,6 +14,8 @@ This is a super-brief report about the police shooting data we worked with earli
 library(jsonlite)
 library(plotly)
 library(dplyr)
+source('scripts/build_map.R')
+
 #Read in data
 data <- fromJSON('https://raw.githubusercontent.com/mkfreeman/police-shooting/master/data/response.json')
 
@@ -25,29 +27,7 @@ data <- data %>%
         mutate(shots_fired = ifelse(is.na(shots_fired), mean(shots_fired, na.rm = T), shots_fired))
 
 #### From here down, you should make changes ####
-# Create a bubble map of the data
-g <- list(
-  scope = 'usa', 
-  projection = list(type = 'albers usa'),
-  showland = FALSE,
-  landcolor = toRGB("gray85"), 
-  subunitwidth = 1,
-  countrywidth = 0,
-  subunitcolor = toRGB("gray85"), 
-  countrycolor = toRGB('gray85')
-)
 
-### Bonus: create informative hover text ###
-
-# Create graph
-plot_ly(data, 
-        lon = lng, 
-        lat = lat, 
-        text = paste('<b>Name:</b>', data[,"Victim Name"], '<br><b>Shots Fired:</b>', data$shots_fired),
-        hoverinfo = 'text',
-        marker = list(size = 1 + shots_fired/3, opacity = .4, color = 'red'),
-        type = 'scattergeo', 
-        locationmode = 'USA-states'
-) %>%
-  layout(title = 'Crowdsourced Police Shootings', geo = g)
+# Pass data to the build_map function
+build_map(data)
 ```
