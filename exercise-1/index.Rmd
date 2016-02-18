@@ -1,0 +1,53 @@
+---
+title: "index.Rmd"
+output: html_document
+---
+This is a super-brief report about the police shooting data we worked with earlier this quarter.  Currently, all of the code to make the map below is in this file.  You should do the following:
+
+- Create a `build_map.R` file in the `scripts/` directory
+- In your `build_map.R` file, write a function `build_map` that takes in your data, and returns the map that you want to create
+- In this `Readme.Rmd` file, use the `source` function to make the `build_map` function accessible to you
+- Recreate the map below using the `build_map` function
+- Use the `Knit HTML` button to confirm that you've properly recreated your map
+
+```{r eval=TRUE, echo=FALSE, message=FALSE}
+library(jsonlite)
+library(plotly)
+library(dplyr)
+#Read in data
+data <- fromJSON('https://raw.githubusercontent.com/mkfreeman/police-shooting/master/data/response.json')
+
+# Dealing with the `Shots Fired` column
+# Creating a new Numeric variable with no space in the name
+# Replacing NA values with the mean (that makes sense, right?)
+data$shots_fired <- as.numeric(data[,'Shots Fired'])
+data <- data %>%
+        mutate(shots_fired = ifelse(is.na(shots_fired), mean(shots_fired, na.rm = T), shots_fired))
+
+#### From here down, you should make changes ####
+# Create a bubble map of the data
+g <- list(
+  scope = 'usa', 
+  projection = list(type = 'albers usa'),
+  showland = FALSE,
+  landcolor = toRGB("gray85"), 
+  subunitwidth = 1,
+  countrywidth = 0,
+  subunitcolor = toRGB("gray85"), 
+  countrycolor = toRGB('gray85')
+)
+
+### Bonus: create informative hover text ###
+
+# Create graph
+plot_ly(data, 
+        lon = lng, 
+        lat = lat, 
+        text = paste('<b>Name:</b>', data[,"Victim Name"], '<br><b>Shots Fired:</b>', data$shots_fired),
+        hoverinfo = 'text',
+        marker = list(size = 1 + shots_fired/3, opacity = .4, color = 'red'),
+        type = 'scattergeo', 
+        locationmode = 'USA-states'
+) %>%
+  layout(title = 'Crowdsourced Police Shootings', geo = g)
+```
