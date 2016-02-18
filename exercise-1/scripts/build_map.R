@@ -13,7 +13,7 @@ build_map <- function(data) {
   )
   
   # Create graph
-  plot_ly(data, 
+  map <- plot_ly(data, 
           lon = lng, 
           lat = lat, 
           text = paste('<b>Name:</b>', data[,"Victim Name"], '<br><b>Shots Fired:</b>', data$shots_fired),
@@ -23,4 +23,6 @@ build_map <- function(data) {
           locationmode = 'USA-states'
   ) %>%
     layout(title = 'Crowdsourced Police Shootings', geo = g)
+  
+  return(map)
 }
