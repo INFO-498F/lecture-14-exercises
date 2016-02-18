@@ -37,7 +37,6 @@ g <- list(
   countrycolor = toRGB('gray85')
 )
 
-### Bonus: create informative hover text ###
 
 # Create graph
 plot_ly(data, 
