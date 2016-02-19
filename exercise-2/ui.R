@@ -1,13 +1,10 @@
 shinyUI(fluidPage(
   
-  # Copy the line below to make a select box 
-  selectInput("export", label = h3("Choose Expot"), 
-              choices = list("Beef" = 'beef', "Dairy" = 'dairy', "Total" = 'total.exports'), 
-              selected = 1),
+  # Add a numbericInput to choose the number of observations
+  numericInput("num", label = "# observations", value = 100),
+  selectInput('color', label = 'Color', choices = list("Red" = 'red', 'Blue' = 'blue', 'Green' = 'green')),
   
-  hr(),
-  mainPanel(
-    plotlyOutput('map')
-  )
-  
+  # Plot the output with the name "histogram"
+  plotOutput('scatter')
+
 ))

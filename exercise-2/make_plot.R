@@ -1,6 +1,3 @@
-# Server.r
-
-library(shiny)
 ### Exercise 2 ###
 
 # 1.  Build a shiny app that displays this chart
@@ -9,13 +6,6 @@ library(shiny)
 
 # We'll look into these more next week: http://shiny.rstudio.com/gallery/widget-gallery.html 
 
-shinyServer(function(input, output) {
-  # You can access the value of the widget with input$select, e.g.
-  output$scatter <- renderPlot({ 
-    set.seed(14)
-    x <- rnorm(input$num)
-    y <- rnorm(input$num)
-    return(plot(x,y, col=input$color))
-  })
-  
-})
+x <- rnorm(100)
+y <- rnorm(100)
+plot(x,y, col='blue')
